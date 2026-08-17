@@ -1,0 +1,24 @@
+"DepotBuild"
+{
+	// Fill in once Steamworks assigns a real Depot ID under Ascended
+	// STT's AppID (Steamworks usually offers AppID+1 as the default
+	// depot).
+	"DepotID"		"PLACEHOLDER_DEPOTID"
+	"contentroot"	"..\dist\AscendedSTT\"
+
+	"FileMapping"
+	{
+		"LocalPath"		"*"
+		"DepotPath"		"."
+		"recursive"		"1"
+	}
+
+	// .env holds a real Azure Speech key when it exists locally -- the
+	// normal build process never copies it into dist/, but this stays
+	// here as a second, independent guard. A key uploaded to a public
+	// Steam depot is a key that's now public, permanently. PyInstaller
+	// also doesn't emit .pdb files, but excluding them is a harmless
+	// no-op safety net -- Valve's own sample scripts do the same.
+	"FileExclusion"		".env"
+	"FileExclusion"		"*.pdb"
+}

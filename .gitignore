@@ -1,0 +1,22 @@
+# Real Azure Speech key/region live here -- never publish this.
+# .env.example is the template that stays tracked.
+.env
+
+# Build artifacts (regenerate with: pyinstaller AscendedSTT.spec)
+build/
+dist/
+
+# steamcmd's own build logs/manifests -- regenerated on every upload
+steam_build_output/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local machine/device state (mic device name, custom text color, hotkey
+# choice, etc.) -- personal to this PC, not part of the app's source.
+prefs.json
+
+# Retired files kept locally for reference, never published -- see
+# _orphaned/README.md for what's in here and why it's not tracked.
+_orphaned/

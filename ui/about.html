@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About / Support</title>
+<link rel="stylesheet" href="config.css">
+<style>
+  body { text-align: center; padding-top: 18px; position: relative; }
+  h2 { margin: 4px 0 12px; }
+  .credits { font-size: 12px; line-height: 1.5; white-space: pre-line; margin-bottom: 14px; text-align: left; }
+  .link-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
+  .link-btn {
+    flex: 1;
+    background: var(--pill-fill);
+    border: 1px solid var(--pill-border);
+    color: var(--pill-text);
+    border-radius: 6px;
+    padding: 8px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .link-btn:hover { background: var(--pill-hover); }
+  hr { margin: 14px 0; }
+  .donate-blurb { font-size: 12px; line-height: 1.5; margin-bottom: 12px; text-align: left; }
+  button.primary { font-size: 14px; }
+
+  /* Watermark: sits behind all the text/buttons (they're normal static
+     content, which paints above an absolutely-positioned sibling like
+     this), and uses position:absolute (not fixed) so it scrolls along
+     with the page rather than staying pinned on screen. The body's own
+     background color still shows through around and beneath it since
+     this only covers part of the page at reduced opacity. A quiet mark
+     in the background, never louder than what's actually being said. */
+  .watermark {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 245px;
+    background-image: url('../assets/bloom_watermark.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.25;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Every real content element needs to explicitly sit above the
+     watermark, since an absolutely-positioned sibling paints above
+     plain static content by default regardless of DOM order. */
+  body > *:not(.watermark) {
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+  <div class="watermark"></div>
+  <h2 id="appName">Ascended STT</h2>
+  <div class="credits" id="credits"></div>
+
+  <div class="link-row">
+    <button class="link-btn" id="groupBtn" title="Open the Ascended VRChat Group page">Ascended VRChat Group</button>
+    <button class="link-btn" id="discordBtn" title="Open the Ascended Discord server">Ascended Discord</button>
+  </div>
+
+  <hr>
+
+  <div class="donate-blurb" id="donateBlurb"></div>
+  <button class="primary" id="donateBtn" title="Open the donation page">&#9749; Buy us a coffee</button>
+  <br><br>
+  <button id="closeBtn" title="Close">Close</button>
+
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script src="about.js"></script>
+</body>
+</html>

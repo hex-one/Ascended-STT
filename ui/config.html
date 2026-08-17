@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Config</title>
+<link rel="stylesheet" href="config.css">
+</head>
+<body>
+
+  <h3>Speech Service:</h3>
+  <select id="speechService" title="Which speech-to-text engine to use"></select>
+  <div class="error" id="speechServiceError"></div>
+
+  <div id="azureSection" class="service-section">
+    <h4 id="azureKeyLabel">Azure Speech Key:</h4>
+    <input type="password" id="azureKey" aria-labelledby="azureKeyLabel" placeholder="Your Azure Speech key" title="Your Azure Cognitive Services Speech key">
+    <label class="checkbox-row"><input type="checkbox" id="showKey" title="Show the key in plain text"> Show key</label>
+    <h4 id="azureRegionLabel">Azure Region (e.g. eastus):</h4>
+    <input type="text" id="azureRegion" aria-labelledby="azureRegionLabel" placeholder="eastus" title="The Azure region your Speech resource was created in">
+    <div class="error" id="azureError"></div>
+    <button class="primary" id="saveAzure" title="Save Azure settings">Save Azure Settings</button>
+
+    <h4 id="customEndpointLabel">Custom Speech Endpoint ID:</h4>
+    <div class="hint">Got a custom-trained Azure Speech model (built for your
+      own accent, dialect, or voice)? Paste its Endpoint ID here - yep,
+      special speech people have real options too. &#128521;
+      Leave blank to just use the standard model for your chosen language.</div>
+    <input type="text" id="customEndpoint" aria-labelledby="customEndpointLabel" placeholder="e.g. 3b0f2e1a-....-....-....-............" title="Optional custom Speech model Endpoint ID">
+    <button id="azureGuideBtn" title="Open the Azure setup guide">View Setup Guide</button>
+  </div>
+
+  <div id="googleSection" class="service-section" style="display:none;">
+    <div class="hint">Needs a Google Cloud service account key (JSON file)
+      with the Speech-to-Text API enabled.</div>
+    <div class="path" id="googleCredPath">(none selected)</div>
+    <button id="browseGoogleCred" title="Browse for your Google Cloud service account key (JSON file)">Browse...</button>
+    <button id="googleGuideBtn" title="Open the Google Cloud setup guide">View Setup Guide</button>
+    <div class="error" id="googleError"></div>
+    <button class="primary" id="saveGoogle" title="Save Google Cloud settings">Save Google Settings</button>
+  </div>
+
+  <div id="awsSection" class="service-section" style="display:none;">
+    <div class="hint">Needs an AWS IAM user with Transcribe permissions.</div>
+    <h4 id="awsAccessKeyLabel">AWS Access Key ID:</h4>
+    <input type="text" id="awsAccessKey" aria-labelledby="awsAccessKeyLabel" placeholder="AKIA..." title="Your AWS IAM access key ID">
+    <h4 id="awsSecretKeyLabel">AWS Secret Access Key:</h4>
+    <input type="password" id="awsSecretKey" aria-labelledby="awsSecretKeyLabel" placeholder="Your AWS secret key" title="Your AWS IAM secret access key">
+    <label class="checkbox-row"><input type="checkbox" id="showAwsSecret" title="Show the secret key in plain text"> Show secret key</label>
+    <h4 id="awsRegionLabel">AWS Region (e.g. us-east-1):</h4>
+    <input type="text" id="awsRegion" aria-labelledby="awsRegionLabel" placeholder="us-east-1" title="The AWS region your Transcribe access is in">
+    <button id="awsGuideBtn" title="Open the AWS setup guide">View Setup Guide</button>
+    <div class="error" id="awsError"></div>
+    <button class="primary" id="saveAws" title="Save AWS settings">Save AWS Settings</button>
+  </div>
+
+  <div id="whisperSection" class="service-section" style="display:none;">
+    <div class="hint">Runs fully offline on this PC - no account, no key.
+      First use downloads the chosen model automatically.</div>
+    <h4 id="whisperModelSizeLabel">Model size:</h4>
+    <select id="whisperModelSize" aria-labelledby="whisperModelSizeLabel" title="Bigger models are more accurate but slower and use more memory"></select>
+    <h4 id="whisperDeviceLabel">Device:</h4>
+    <select id="whisperDevice" aria-labelledby="whisperDeviceLabel" title="Run Whisper on the CPU or a CUDA-capable GPU">
+      <option value="cpu">CPU</option>
+      <option value="cuda">GPU (CUDA)</option>
+    </select>
+    <button id="whisperGuideBtn" title="Open the Whisper setup guide">View Setup Guide</button>
+    <div class="error" id="whisperError"></div>
+    <button class="primary" id="saveWhisper" title="Save Whisper settings">Save Whisper Settings</button>
+  </div>
+
+  <div id="voskSection" class="service-section" style="display:none;">
+    <div class="hint">Runs fully offline on this PC - no account, no key.
+      Needs a downloaded Vosk model folder for your language.</div>
+    <div class="path" id="voskModelPath">(none selected)</div>
+    <button id="browseVoskModel" title="Browse for a downloaded Vosk model folder">Browse...</button>
+    <button id="voskGuideBtn" title="Open the Vosk setup guide">View Setup Guide</button>
+    <div class="error" id="voskError"></div>
+    <button class="primary" id="saveVosk" title="Save Vosk settings">Save Vosk Settings</button>
+  </div>
+
+  <div id="windowsSection" class="service-section" style="display:none;">
+    <div class="hint">Uses Windows' own built-in speech recognition - no
+      account, no key, no download. Language is whatever you've installed
+      under Windows Settings &gt; Time &amp; Language &gt; Speech.</div>
+    <button id="windowsGuideBtn" title="Open the Windows Speech setup guide">View Setup Guide</button>
+    <div class="error" id="windowsError"></div>
+    <button class="primary" id="testWindows" title="Test that Windows Speech Recognition is working">Test Windows Speech</button>
+  </div>
+
+  <hr>
+
+  <h3>Appearance:</h3>
+  <div class="hint">Widget backgrounds are always transparent now - nothing
+    to configure there. Pick a text color and font below.</div>
+  <label for="textColor">Text color:</label>
+  <input type="color" id="textColor" value="#ffffff" title="Text color for the main window">
+  <button id="resetTextColor" title="Reset text color to default">Reset</button>
+  <br><br>
+  <label for="fontFamily">Text font:</label>
+  <select id="fontFamily" title="Font used for text in the main window">
+    <option>Segoe UI</option>
+    <option>Arial</option>
+    <option>Verdana</option>
+    <option>Trebuchet MS</option>
+    <option>Century Gothic</option>
+    <option>Consolas</option>
+    <option>Comic Sans MS</option>
+  </select>
+
+  <hr>
+
+  <h3>Input Device:</h3>
+  <select id="deviceSelect" title="Which microphone to listen to"></select>
+
+  <hr>
+
+  <h3>VRChat OSC Port:</h3>
+  <div class="hint">Default: 9000. Only change this if VRChat itself is configured to use a different OSC port.</div>
+  <input type="number" id="oscPort" min="1" max="65535" placeholder="9000" title="VRChat OSC port (default 9000)">
+  <div class="error" id="oscPortError"></div>
+
+  <hr>
+
+  <h3>Hotkey:</h3>
+  <label class="checkbox-row"><input type="checkbox" id="hotkeyEnabled" title="Enable a global hotkey to start/stop listening"> Enable hotkey</label>
+  <div class="hotkey-row">
+    <label><input type="radio" name="hotkeyMode" id="hotkeyModeToggle" value="toggle" title="Pressing the hotkey toggles listening on and off"> Toggle</label>
+    <label><input type="radio" name="hotkeyMode" id="hotkeyModePTT" value="push_to_talk" title="Hold the hotkey down to listen, release to stop"> Push-to-Talk</label>
+  </div>
+
+  <div class="hotkey-row">
+    <label><input type="radio" name="hotkeyInputType" id="hotkeyInputKeyboard" value="keyboard" title="Use a keyboard key as the hotkey"> Keyboard</label>
+    <label><input type="radio" name="hotkeyInputType" id="hotkeyInputVR" value="vr_controller" title="Use a VR controller button combo as the hotkey"> VR Controller</label>
+  </div>
+
+  <div id="keyboardHotkeySection">
+    <div class="hint">Key: a single letter/number (a, 1, ,) or a special
+      key name (f9, space, tab, enter, esc).</div>
+    <input type="text" id="hotkeyKey" placeholder="f9" title="Keyboard key to use as the hotkey">
+  </div>
+
+  <div id="vrHotkeySection" style="display:none;">
+    <div class="hint">Needs SteamVR running. Click Start, then hold down
+      the controller buttons you want (e.g. left trigger + left A),
+      then let go - whatever was held together gets captured as the combo.</div>
+    <div class="vr-availability" id="vrAvailability"></div>
+    <button id="vrCaptureBtn" title="Start capturing a VR controller button combo">Start Capture</button>
+    <div class="path" id="vrCaptureStatus"></div>
+    <div class="path" id="vrSavedCombo"></div>
+  </div>
+
+  <div class="error" id="hotkeyError"></div>
+
+  <hr>
+
+  <h3>Main Window Background:</h3>
+  <div class="hint">PNG or JPG, any size (auto-scaled to fill the window).</div>
+  <div class="path" id="mainBgPath">(default)</div>
+  <button id="browseMainBg" title="Browse for a custom main window background image">Browse...</button>
+  <button id="resetMainBg" title="Reset to the default main window background">Reset</button>
+
+  <h3>Tiny Mode Background:</h3>
+  <div class="hint">PNG or JPG, any size (auto-scaled to fill the window).</div>
+  <div class="path" id="tinyBgPath">(default)</div>
+  <button id="browseTinyBg" title="Browse for a custom Tiny Mode background image">Browse...</button>
+  <button id="resetTinyBg" title="Reset to the default Tiny Mode background">Reset</button>
+
+  <hr>
+
+  <h3>Overlay Mode:</h3>
+  <div class="hint">For pinning this window in VR via XSOverlay or OVR
+    Toolkit's window capture. Hides the background image (a plain panel
+    captures more reliably than a photo) and switches borders/outlines
+    over to your text color above. Your background picture isn't
+    deleted -- turn this off to get it back.</div>
+  <label class="checkbox-row"><input type="checkbox" id="overlayMode" title="Hide the background image for cleaner VR overlay capture"> Enable Overlay Mode</label>
+
+  <hr>
+
+  <h3>Updates:</h3>
+  <div class="hint">Content (the UI, artwork, and setup guides) updates
+    itself automatically in the background. Use these to check by hand,
+    or to check for a whole new app version.</div>
+  <button id="checkContentUpdateBtn" title="Check for UI/artwork/guide updates now">Check for Content Updates</button>
+  <button id="checkAppUpdateBtn" title="Check for a new app version now">Check for App Updates</button>
+  <div class="path" id="updateStatus"></div>
+
+  <hr>
+  <button id="closeBtn" title="Close settings">Close</button>
+
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script src="config.js"></script>
+</body>
+</html>

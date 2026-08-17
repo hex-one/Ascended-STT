@@ -1,0 +1,28 @@
+"appbuild"
+{
+	// Fill in once Steamworks assigns a real AppID for Ascended STT.
+	"appid"			"PLACEHOLDER_APPID"
+	"desc"			"Ascended STT automated build"
+
+	// steamcmd writes its own build logs/manifests here -- gitignored,
+	// safe to delete between builds.
+	"buildoutput"	"..\steam_build_output\"
+
+	// Points at the exact folder `pyinstaller AscendedSTT.spec` plus
+	// the manual ui/+assets/ copy step produces -- do both first (see
+	// README.md's "Building a standalone .exe").
+	"contentroot"	"..\dist\AscendedSTT\"
+
+	// Leave blank until you actually mean to publish -- an empty
+	// "setlive" uploads to Steamworks without flipping the public
+	// "default" branch to it, so you can smoke-test a build in a
+	// private branch before anyone else sees it.
+	"setlive"		""
+	"preview"		"0"
+	"local"			""
+
+	"depots"
+	{
+		"PLACEHOLDER_DEPOTID"		"depot_build_stt.vdf"
+	}
+}

@@ -1,0 +1,25 @@
+azure-cognitiveservices-speech
+python-osc
+sounddevice
+pynput
+numpy
+pillow
+python-dotenv
+PySide6
+
+# Optional - only needed if you use the VR Controller hotkey option in
+# Config (requires SteamVR to be running). Not needed for keyboard
+# hotkeys or anything else in the app.
+# openvr
+
+# Optional - Speech Service picks in Config. Only the one(s) you
+# actually select need to be installed; azure-cognitiveservices-speech
+# above already covers the Azure option. See GOOGLE_SETUP.md /
+# AWS_SETUP.md / WHISPER_SETUP.md / VOSK_SETUP.md /
+# WINDOWS_SPEECH_SETUP.md for what each one needs beyond the package.
+# google-cloud-speech      # Google Cloud Speech-to-Text
+# amazon-transcribe        # AWS Transcribe (real-time streaming)
+# boto3                    # AWS Transcribe (credential check only)
+# faster-whisper           # Whisper (local)
+# vosk                     # Vosk (local)
+# pywin32                  # Windows Speech Recognition (local)

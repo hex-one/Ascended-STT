@@ -1,0 +1,33 @@
+/* Shared palette for every window this app opens (main, config,
+   about) -- one named set of colors instead of the same hex values
+   retyped window after window. Change the brand's colors here and
+   they travel everywhere at once, like a single spring feeding every
+   stream downhill from it. */
+:root {
+  --text-color: white;
+  --font-family: "Segoe UI", sans-serif;
+
+  /* Accent (purple pill/brand color) */
+  --pill-fill: rgba(180, 174, 230, 0.88);
+  --pill-border: #a68cda;
+  --pill-hover: rgba(225, 223, 245, 0.95);
+  --pill-text: #3a2a5c;
+  --pill-tint: rgba(166, 140, 218, 0.18);
+  --accent-light: #b4aee6;
+
+  /* Status */
+  --success: #7fd97f;
+  --danger: #ff8080;
+  --danger-strong: #cc0000;
+
+  /* LED indicators (status panel + LED-style toggles) */
+  --led-off: #2a2a2a;
+  --led-on: #00ff66;
+  --led-info: #5ac8ff;
+  --led-danger: #ff3b3b;
+
+  /* Surfaces / muted text */
+  --bg-panel: #1a1a1a;
+  --text-muted: #cccccc;
+  --border-muted: #555555;
+}

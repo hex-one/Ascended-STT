@@ -1,0 +1,467 @@
+@import url("theme.css");
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 380px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 999;
+}
+
+.loading-title {
+  color: var(--accent-light);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.startup-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.startup-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #777777;
+  transition: color 0.2s ease;
+}
+
+.startup-checklist li.active { color: var(--accent-light); }
+.startup-checklist li.done { color: var(--success); }
+.startup-checklist li.error { color: var(--danger); }
+
+.step-icon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+}
+.startup-checklist li.active .step-icon {
+  animation: step-pulse 1s ease-in-out infinite;
+}
+
+.step-message {
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+@keyframes step-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.lets-go-text {
+  display: none;
+  color: var(--success); /* base color -- lets-go-rainbow's hue-rotate shifts it continuously from here */
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  animation: lets-go-pulse 0.5s ease-in-out infinite, lets-go-rainbow 2s linear infinite;
+}
+
+@keyframes lets-go-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes lets-go-rainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.loading-retry {
+  display: none;
+  background-color: var(--pill-fill);
+  border: 2px solid var(--pill-border);
+  border-radius: 999px;
+  color: var(--pill-text);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+
+/* Every layout container below is intentionally transparent - no
+   background-color anywhere - so the body's background image shows
+   straight through. This is the whole point of the CSS rewrite: no more
+   color-matching hacks, just real transparency. Nothing hidden behind
+   a fake layer of paint. */
+.row, .lang-col, .controls-grid, .footer {
+  background: transparent;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 14px;
+}
+
+.light {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--danger-strong);
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  transition: background-color 0.2s ease;
+}
+
+.status-text {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.last-text {
+  text-align: center;
+  padding: 8px 24px 4px;
+  font-size: 13px;
+  min-height: 18px;
+}
+
+.lang-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.lang-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.caption {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+/* --- Custom-styled native <select> dropdowns: real alpha-blended pill
+   background instead of a flat color match, plus a custom arrow. --- */
+.dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--pill-fill);
+  border: 2px solid var(--pill-border);
+  border-radius: 999px;
+  color: var(--pill-text);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 26px 6px 12px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0L5 6L10 0Z' fill='%233a2a5c'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.dropdown:hover { background-color: var(--pill-hover); }
+
+.small-dropdown { width: 108px; height: 30px; font-size: 11px; }
+#inputLang { width: 138px; }
+#outputLang { width: 158px; }
+
+.image-btn {
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+}
+
+.talk-btn {
+  width: 208px;
+  height: 74px;
+  margin: 10px auto;
+}
+
+/* LED-style toggle buttons (UWU/Persona/Profanity/Keep Alive/Tiny Mode) --
+   a pill matching .dropdown's own shape, a real CSS-drawn dot standing
+   in for the old baked-text PNG. Borrows the same lit/off glow as
+   .status-led below, so a toggle and a status light speak the same
+   visual language instead of two dialects under one roof. */
+.led-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--pill-fill);
+  border: 2px solid var(--pill-border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+.led-toggle:hover { background-color: var(--pill-hover); }
+
+.led-toggle .led-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--led-off);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7);
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.led-toggle.on .led-dot {
+  background: var(--led-on);
+  box-shadow: 0 0 6px 2px rgba(0, 255, 102, 0.85), inset 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.led-toggle-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pill-text);
+  white-space: nowrap;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 6px 10px;
+  justify-items: center;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.hint {
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.85;
+  padding-bottom: 4px;
+}
+
+.status-panel {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 2px 0 6px;
+}
+
+.status-led-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-led-label {
+  font-size: 9px;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+}
+
+.status-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--led-off);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.status-led.lit {
+  background: var(--led-on);
+  box-shadow: 0 0 6px 2px rgba(0, 255, 102, 0.85), inset 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.status-led.heartbeat-pulse {
+  background: var(--led-info);
+  box-shadow: 0 0 6px 2px rgba(90, 200, 255, 0.85), inset 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.status-led.disconnected {
+  background: var(--led-danger);
+  box-shadow: 0 0 6px 2px rgba(255, 59, 59, 0.85);
+}
+
+.tiny-toggle { margin: 6px auto; }
+
+.log-box {
+  height: 110px;
+  margin: 4px 8px;
+  padding: 6px 8px;
+  overflow-y: auto;
+  background-color: rgba(17, 17, 17, 0.82); /* deliberately opaque - console look, unaffected by theme */
+  border-radius: 8px;
+  color: #dddddd;
+  font-family: Consolas, monospace;
+  font-size: 10px;
+  white-space: pre-wrap;
+}
+
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 8px;
+  padding: 6px 10px;
+  background-color: var(--pill-tint);
+  border: 1px solid var(--pill-border);
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.update-banner span#updateBannerText { flex: 1; }
+
+.update-banner button {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-border);
+  color: white;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding: 6px 10px;
+}
+
+/* .icon-btn is a real <button> now, not the plain <span> it used to be
+   -- keyboard-focusable and Enter/Space-activatable for free, no extra
+   work needed to earn that. The resets below just strip the default
+   button chrome back down to how the old span quietly looked. */
+.icon-btn {
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-color);
+  padding: 0 6px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  line-height: normal;
+}
+
+.heart { color: var(--text-color); margin-left: auto; margin-right: 8px; }
+.copyright {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+/* --- Tiny Mode: hide everything except status/last-text/talk/tiny-toggle --- */
+body.tiny-mode .full-only { display: none !important; }
+body.tiny-mode .talk-btn { margin: 8px auto; }
+body.tiny-mode .tiny-toggle { margin: 4px auto 10px; }
+
+/* --- Overlay Mode: for pinning the window in VR via XSOverlay/OVR
+   Toolkit's window capture. app.js already withholds the background
+   image entirely (a flat panel captures far more reliably than a
+   photo) -- this !important is just a second guarantee against
+   anything stale lingering, since the two enforce the same rule from
+   different layers. Decorative outlines (dropdown/modal borders, fixed
+   at the purple accent otherwise) switch to the user's own text color
+   instead, so the whole panel reads as one consistent color in a
+   headset rather than clashing with whatever accent color happened to
+   be baked in here. */
+body.overlay-mode { background-image: none !important; }
+body.overlay-mode .dropdown { border-color: var(--text-color); }
+body.overlay-mode .modal-box { border-color: var(--text-color); }
+
+/* --- Shutdown confirmation modal: small and centered, replacing the
+   native browser confirm() dialog which showed raw IP:port chrome. --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-overlay.visible { display: flex; }
+
+.modal-box {
+  background: var(--bg-panel);
+  border: 2px solid var(--pill-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  width: 200px;
+  text-align: center;
+}
+
+.modal-text {
+  color: #ffffff;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-btn {
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 18px;
+  cursor: pointer;
+}
+
+.modal-btn-primary {
+  background-color: var(--pill-fill);
+  border: 2px solid var(--pill-border);
+  color: var(--pill-text);
+}
+
+.modal-btn-secondary {
+  background-color: transparent;
+  border: 2px solid var(--border-muted);
+  color: var(--text-muted);
+}

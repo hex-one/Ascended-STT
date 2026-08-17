@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ascended STT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="body">
+
+  <div id="loadingOverlay">
+    <div class="loading-title">Starting up...</div>
+    <ul class="startup-checklist" id="startupChecklist">
+      <li data-step="page_loaded"><span class="step-icon">&#9675;</span> Loading interface</li>
+      <li data-step="bridge_connected"><span class="step-icon">&#9675;</span> Connecting to app</li>
+      <li data-step="settings_loaded"><span class="step-icon">&#9675;</span> Loading settings</li>
+      <li data-step="mic_finding"><span class="step-icon">&#9675;</span> Finding microphone</li>
+      <li data-step="azure_connecting"><span class="step-icon">&#9675;</span> Connecting to speech service</li>
+      <li data-step="mic_connecting"><span class="step-icon">&#9675;</span> Opening microphone</li>
+      <li data-step="ready"><span class="step-icon">&#9675;</span> Ready to use</li>
+    </ul>
+    <div class="lets-go-text" id="letsGoText">Let's GO!!!</div>
+    <button id="loadingRetryBtn" class="loading-retry" title="Restart the startup sequence">Taking a while - Retry</button>
+  </div>
+
+  <div class="row status-row">
+    <div class="light" id="light"></div>
+    <div class="status-text" id="statusText">Paused</div>
+  </div>
+
+  <div class="last-text" id="lastText">(nothing heard yet)</div>
+
+  <div class="row lang-row full-only">
+    <div class="lang-col">
+      <label class="caption">You speak:</label>
+      <select id="inputLang" class="dropdown" title="Language you're speaking"></select>
+    </div>
+    <div class="lang-col">
+      <label class="caption">Send as:</label>
+      <select id="outputLang" class="dropdown" title="Language your speech is translated to before sending"></select>
+    </div>
+  </div>
+
+  <button id="talkBtn" class="image-btn talk-btn" style="background-image:url('../assets/start_button.png')" title="Start or stop listening"></button>
+
+  <div class="controls-grid full-only">
+    <button id="uwuBtn" class="led-toggle" type="button" aria-pressed="false" title="Toggle UwU-speak text mangling"><span class="led-dot"></span><span class="led-toggle-label">UWU</span></button>
+    <button id="personaBtn" class="led-toggle" type="button" aria-pressed="false" title="Toggle the selected persona's text transformation"><span class="led-dot"></span><span class="led-toggle-label">Persona</span></button>
+    <button id="profanityBtn" class="led-toggle" type="button" aria-pressed="false" title="Toggle whether profanity is left in (on) or censored (off)"><span class="led-dot"></span><span class="led-toggle-label">Profanity</span></button>
+    <select id="personaSelect" class="dropdown small-dropdown" title="Which persona style to apply when Persona is on"></select>
+  </div>
+
+  <div class="row settings-row full-only">
+    <button id="keepAliveBtn" class="led-toggle" type="button" aria-pressed="false" title="Toggle periodic keep-alive pings that stop the connection from dropping"><span class="led-dot"></span><span class="led-toggle-label">Keep Alive</span></button>
+  </div>
+
+  <div class="status-panel full-only">
+    <div class="status-led-group" title="Keep Alive is actively checking the connection">
+      <span class="status-led" id="heartbeatLed"></span>
+      <span class="status-led-label">Keep Alive</span>
+    </div>
+    <div class="status-led-group" title="Sending your voice to the speech service">
+      <span class="status-led" id="txLed"></span>
+      <span class="status-led-label">TX</span>
+    </div>
+    <div class="status-led-group" title="Receiving results back from the speech service">
+      <span class="status-led" id="rxLed"></span>
+      <span class="status-led-label">RX</span>
+    </div>
+  </div>
+
+  <div class="hint full-only" id="hintText">Hotkey: press F9 to toggle</div>
+
+  <button id="tinyBtn" class="led-toggle tiny-toggle" type="button" aria-pressed="false" title="Toggle Tiny Mode (a smaller, compact window)"><span class="led-dot"></span><span class="led-toggle-label">Tiny Mode</span></button>
+
+  <div class="log-box full-only" id="logBox" title="Recent activity log"></div>
+
+  <div class="update-banner full-only" id="updateBanner" style="display:none;">
+    <span id="updateBannerText"></span>
+    <button id="updateBannerBtn" title="Open the download page for the new version">Get it</button>
+    <button class="icon-btn" id="updateBannerDismiss" type="button" title="Dismiss this notification" aria-label="Dismiss this notification">&times;</button>
+  </div>
+
+  <div class="footer full-only">
+    <button class="icon-btn" id="powerIcon" type="button" title="Shut down Ascended STT" aria-label="Shut down Ascended STT">&#9211;</button>
+    <button class="icon-btn" id="gearIcon" type="button" title="Open settings" aria-label="Open settings">&#9881;</button>
+    <span class="copyright" id="copyrightText"></span>
+    <button class="icon-btn heart" id="heartIcon" type="button" title="About / Support" aria-label="About / Support">&#9829;</button>
+  </div>
+
+  <div class="modal-overlay" id="shutdownModal">
+    <div class="modal-box">
+      <div class="modal-text">Shut down Ascended STT?</div>
+      <div class="modal-actions">
+        <button id="shutdownCancelBtn" class="modal-btn modal-btn-secondary" title="Cancel and keep running">Cancel</button>
+        <button id="shutdownOkBtn" class="modal-btn modal-btn-primary" title="Confirm shutdown">OK</button>
+      </div>
+    </div>
+  </div>
+
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
