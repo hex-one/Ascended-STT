@@ -155,7 +155,10 @@ APP_CREDITS_TEXT = (
     "Made by Jasper Hex and Ryy for the Ascended VRChat community.\n\n"
     "We got tired of every other speech-to-text app randomly dropping "
     "connection and being slooooowww... so we just made our own "
-    "instead! Made sure it had free options. Cheers!"
+    "instead! Made sure it had free options. Cheers!\n\n"
+    "Built free, for our own members, so being in voice together got a "
+    "little easier. It's branded ours, but anyone in any VRChat "
+    "community is welcome to grab it too."
 )
 DONATE_BLURB = (
     "Running the Group and building tools like this one has been "

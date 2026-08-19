@@ -14,6 +14,12 @@ ghost, or 23 other things before they go out. Not everything has to be
 serious. Some of this exists purely because it made us laugh while
 building it.
 
+Built and given away free, for the Ascended VRChat group's own
+members, so being in voice together got a little easier instead of a
+little harder. It's branded ours, but there's nothing Ascended-only
+about what it does — anyone in any VRChat community is welcome to run
+this too.
+
 Built on **PySide6 + QWebEngineView** — a real Qt window with a
 Chromium tab inside it, talking to a Python backend over Qt's
 `QWebChannel` bridge. The HTML/CSS/JS in `ui/` is the actual interface;
