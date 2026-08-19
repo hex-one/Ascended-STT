@@ -2539,7 +2539,7 @@ def make_secondary_window(bridge, title, html_file, width, height, on_closed):
 #   the user and link to the release page -- same download-and-swap
 #   step they'd already do today, just not left to chance.
 # ---------------------------------------------------------------------------
-CONTENT_REPO = "hex-vr/Ascended-STT"
+CONTENT_REPO = "hex-one/Ascended-STT"
 CONTENT_BRANCH = "main"
 CONTENT_PATHS = [
     "ui", "assets",
