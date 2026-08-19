@@ -150,7 +150,7 @@ APP_NAME = "Ascended STT"
 # Bump this by hand alongside every GitHub Release tag (vX.Y.Z) -- it's
 # the only thing the app-update check has to compare against, see
 # check_for_app_update() below.
-APP_VERSION = "0.2.2"
+APP_VERSION = "0.2.3"
 APP_CREDITS_TEXT = (
     "Made by Jasper Hex and Ryy for the Ascended VRChat community.\n\n"
     "We got tired of every other speech-to-text app randomly dropping "
@@ -2115,7 +2115,7 @@ class Bridge(QObject):
             self.about_window.activateWindow()
             return
         self.about_window = make_secondary_window(
-            self, "About / Support", "about.html", 360, 540,
+            self, "About / Support", "about.html", 360, ABOUT_MIN_HEIGHT,
             on_closed=lambda: setattr(self, "about_window", None),
         )
         self.about_window.show()
@@ -2129,6 +2129,23 @@ class Bridge(QObject):
     def close_about_window(self):
         if self.about_window is not None:
             self.about_window.close()
+
+    @Slot(int)
+    def report_about_content_height(self, content_height):
+        """
+        about.js calls this once, right after it's actually finished
+        filling in the credits/donate text, with the page's real
+        document.body.scrollHeight -- so the window opens sized to fit
+        whatever text is ACTUALLY there instead of a fixed number that
+        needs hand-tuning every time that text grows. Clamped to a
+        sane range so a rendering hiccup can't hand back something
+        absurd; ABOUT_MIN/MAX_HEIGHT live with the rest of this
+        window's sizing right above make_secondary_window.
+        """
+        if self.about_window is None:
+            return
+        target = max(ABOUT_MIN_HEIGHT, min(content_height + ABOUT_HEIGHT_PADDING, ABOUT_MAX_HEIGHT))
+        self.about_window.resize(self.about_window.width(), target)
 
     @Slot(str)
     def open_setup_guide(self, name):
@@ -2477,6 +2494,17 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.bridge.shutdown()
         event.accept()
+
+
+# About's window height self-adjusts to its actual content (see
+# Bridge.report_about_content_height) rather than a fixed number that
+# needed a manual bump every time the credits text grew -- these three
+# just bound that adjustment to something sane. ABOUT_HEIGHT_PADDING
+# covers the link row/donate button/close button below the text that
+# scrollHeight alone doesn't account for.
+ABOUT_MIN_HEIGHT = 420
+ABOUT_MAX_HEIGHT = 900
+ABOUT_HEIGHT_PADDING = 170
 
 
 def make_secondary_window(bridge, title, html_file, width, height, on_closed):

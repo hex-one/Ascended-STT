@@ -21,6 +21,16 @@ new QWebChannel(qt.webChannelTransport, async function (channel) {
   $("credits").textContent = info.credits;
   $("donateBlurb").textContent = info.donate_blurb;
 
+  // Tells the Python side how tall the text actually turned out to be,
+  // so the window can size itself to fit -- rather than a fixed height
+  // someone has to remember to bump by hand every time this text grows.
+  // Read one frame later (requestAnimationFrame) so the browser's
+  // already laid out the text we just set, not whatever it measured
+  // before that.
+  requestAnimationFrame(() => {
+    callBridge("report_about_content_height", document.body.scrollHeight);
+  });
+
   $("groupBtn").addEventListener("click", () => callBridge("open_group_link"));
   $("discordBtn").addEventListener("click", () => callBridge("open_discord_link"));
   $("donateBtn").addEventListener("click", () => callBridge("open_donation_link"));
